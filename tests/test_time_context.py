@@ -46,7 +46,7 @@ def test_format_current_time_explicit_tz(monkeypatch):
     mod = _fresh_time_context(monkeypatch, tz="Asia/Shanghai")
     tag = mod.format_current_time()
     assert _TIME_TAG_RE.match(tag), f"tag 格式不符: {tag!r}"
-    assert ("CST" in tag) or ("+0800" in tag) or ("+08" in tag), tag
+    assert "Asia/Shanghai" in tag, tag
 
 
 def test_format_current_time_invalid_tz_falls_back(monkeypatch):
@@ -61,7 +61,7 @@ def test_config_yaml_timezone_used_when_env_unset(monkeypatch, tmp_path):
     mod = _fresh_time_context(monkeypatch, tz=None, hermes_home=tmp_path)
     tag = mod.format_current_time()
     assert _TIME_TAG_RE.match(tag), tag
-    assert ("JST" in tag) or ("+0900" in tag) or ("+09" in tag), tag
+    assert "Asia/Tokyo" in tag, tag
 
 
 def test_pre_llm_call_hook_returns_time_context(monkeypatch):
