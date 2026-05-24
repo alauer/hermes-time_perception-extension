@@ -1,0 +1,5 @@
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# The repo-root __init__.py is for Hermes' plugin loader, not pytest.
+# Use importlib mode so pytest doesn't try to walk parent packages.
+addopts = ["--import-mode=importlib"]

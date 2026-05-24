@@ -1,0 +1,7 @@
+name: hermes-time-perception
+version: 0.1.1
+description: "Inject current time tag into every LLM turn via pre_llm_call hook (ephemeral, prompt-cache-safe)."
+author: "gejifeng (upstream), pyjoku (Hermes 0.14 flat-layout patch)"
+kind: standalone
+hooks:
+  - pre_llm_call

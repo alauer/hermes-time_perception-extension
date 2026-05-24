@@ -1,3 +1,0 @@
-name: hermes-time-perception
-version: 0.1.0
-description: "Inject current time tag into every LLM turn via pre_llm_call hook."
