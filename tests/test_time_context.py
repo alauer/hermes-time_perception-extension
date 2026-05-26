@@ -66,8 +66,8 @@ def test_config_yaml_timezone_used_when_env_unset(monkeypatch, tmp_path):
 
 def test_pre_llm_call_hook_returns_time_context(monkeypatch):
     _fresh_time_context(monkeypatch)
-    sys.modules.pop("plugin.hooks", None)
-    hooks = importlib.import_module("plugin.hooks")
+    sys.modules.pop("hooks", None)
+    hooks = importlib.import_module("hooks")
 
     result = hooks.on_pre_llm_call(
         session_id="s1",
@@ -84,8 +84,8 @@ def test_pre_llm_call_hook_returns_time_context(monkeypatch):
 
 def test_register_hooks_registers_pre_llm_call(monkeypatch):
     _fresh_time_context(monkeypatch)
-    sys.modules.pop("plugin.hooks", None)
-    hooks = importlib.import_module("plugin.hooks")
+    sys.modules.pop("hooks", None)
+    hooks = importlib.import_module("hooks")
 
     registered: dict[str, object] = {}
 
