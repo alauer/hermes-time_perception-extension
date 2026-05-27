@@ -1,3 +1,16 @@
+[project]
+name = "hermes-time-perception"
+version = "0.1.1"
+requires-python = ">=3.11"
+dependencies = [
+    "PyYAML>=6.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 # The repo-root __init__.py is for Hermes' plugin loader, not pytest.

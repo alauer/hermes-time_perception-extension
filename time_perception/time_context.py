@@ -55,17 +55,17 @@ def format_current_time() -> str:
 
     永不抛异常：任何时区解析失败都回退到本地时区。
     """
+    tz_label = ""
     try:
         if _tz_str:
             from zoneinfo import ZoneInfo
             now = datetime.now(ZoneInfo(_tz_str))
+            tz_label = _tz_str
         else:
             now = datetime.now().astimezone()
     except Exception:
         now = datetime.now().astimezone()
 
     weekday = _WEEKDAYS_ZH[now.weekday()]
-    tz_label = _tz_str or now.strftime("%Z") or now.strftime("%z")
-    if tz_label == "CST":
-        tz_label = "Asia/Shanghai"
+    tz_label = tz_label or now.strftime("%Z") or now.strftime("%z")
     return f"[Current time: {now.strftime('%Y-%m-%d %H:%M')} {tz_label} {weekday}]"
