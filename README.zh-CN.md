@@ -35,9 +35,13 @@ hermes-time_perception-extension/
 
 ### 默认 profile
 
+> **注意：**本仓库是 Aaron Lauer 的 fork（https://github.com/alauer/hermes-time_perception-extension）。
+> 请从 fork 安装，不要安装上游 `gejifeng/hermes-time_perception-extension`，
+> 这样才能拿到 Jeeves.Ai 使用的 Jeeves 格式时间戳（`[Current time: ...]`）。
+
 ```bash
 mkdir -p ~/.hermes/plugins
-git clone https://github.com/gejifeng/hermes-time_perception-extension \
+git clone https://github.com/alauer/hermes-time_perception-extension \
         ~/.hermes/plugins/hermes-time-perception
 
 hermes plugins enable hermes-time-perception
@@ -50,7 +54,7 @@ profile 模式下 Hermes 会扫描 `<profile>/plugins/`，而不是 `~/.hermes/p
 
 ```bash
 mkdir -p ~/.hermes/profiles/<name>/plugins
-git clone https://github.com/gejifeng/hermes-time_perception-extension \
+git clone https://github.com/alauer/hermes-time_perception-extension \
         ~/.hermes/profiles/<name>/plugins/hermes-time-perception
 
 hermes -p <name> plugins enable hermes-time-perception

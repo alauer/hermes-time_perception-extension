@@ -32,9 +32,13 @@ hermes-time_perception-extension/
 
 ### Default profile
 
+> **Note:** This is Aaron Lauer's fork (https://github.com/alauer/hermes-time_perception-extension).
+> Install from this fork, not the original upstream `gejifeng/hermes-time_perception-extension`,
+> so you receive the Jeeves-format timestamp (`[Current time: ...]`) used by Jeeves.Ai.
+
 ```bash
 mkdir -p ~/.hermes/plugins
-git clone https://github.com/gejifeng/hermes-time_perception-extension \
+git clone https://github.com/alauer/hermes-time_perception-extension \
         ~/.hermes/plugins/hermes-time-perception
 
 hermes plugins enable hermes-time-perception
@@ -47,7 +51,7 @@ Profile-mode Hermes scans `<profile>/plugins/` for user plugins, **not** `~/.her
 
 ```bash
 mkdir -p ~/.hermes/profiles/<name>/plugins
-git clone https://github.com/gejifeng/hermes-time_perception-extension \
+git clone https://github.com/alauer/hermes-time_perception-extension \
         ~/.hermes/profiles/<name>/plugins/hermes-time-perception
 
 hermes -p <name> plugins enable hermes-time-perception
