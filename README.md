@@ -9,7 +9,7 @@ A standalone time-perception extension for [Hermes Agent](https://github.com/Nou
 ## Injection example
 
 ```
-[Current time: 2026-05-20 14:30 Asia/Shanghai 星期三]
+[Current local time: Wednesday, 2026-05-20 14:30 Asia/Shanghai]
 ```
 
 ## File layout (flat, Hermes 0.14+ compatible)

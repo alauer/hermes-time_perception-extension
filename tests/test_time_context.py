@@ -17,8 +17,9 @@ if str(_REPO_ROOT) not in sys.path:
 
 
 _TIME_TAG_RE = re.compile(
-    r"^\[Current time: \d{4}-\d{2}-\d{2} \d{2}:\d{2} .+ "
-    r"(星期一|星期二|星期三|星期四|星期五|星期六|星期日)\]$"
+    r"^\[Current local time: "
+    r"(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday), "
+    r"\d{4}-\d{2}-\d{2} \d{2}:\d{2} .+\]$"
 )
 
 

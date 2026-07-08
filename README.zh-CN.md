@@ -12,7 +12,7 @@ Hermes Agent 的独立时间感知扩展。每个 LLM turn 发起之前，通过
 ## 注入示例
 
 ```
-[Current time: 2026-05-20 14:30 Asia/Shanghai 星期三]
+[Current local time: Wednesday, 2026-05-20 14:30 Asia/Shanghai]
 ```
 
 ## 文件结构（flat layout，兼容 Hermes 0.14+）

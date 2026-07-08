@@ -1,12 +1,16 @@
 """
-Turn-level 时间格式化工具。
+Turn-level time formatting utilities.
 
-设计要点：
-  - 时区解析优先委托 Hermes 自带的 ``hermes_time`` 模块，确保与 Hermes 主程序
-    完全一致的优先级链：HERMES_TIMEZONE > ~/.hermes/config.yaml: timezone > 系统本地时区。
-  - Hermes 不可导入时（独立测试场景）走本地等价实现作为兜底。
-  - 时区字符串模块加载时解析一次并缓存（``_tz_str``），datetime.now() 每次重新求值。
-  - 任何异常都降级到 ``datetime.now().astimezone()``，保证 hook 永不抛错。
+Design notes:
+  - Timezone resolution delegates to Hermes' built-in ``hermes_time`` module
+    first, keeping the same priority chain as the main program:
+    HERMES_TIMEZONE > ~/.hermes/config.yaml: timezone > system local timezone.
+  - When Hermes cannot be imported (standalone tests), a local equivalent
+    fallback is used.
+  - The timezone name is resolved once at module import time and cached in
+    ``_tz_str``; ``datetime.now()`` is evaluated fresh on every turn.
+  - Any exception falls back to ``datetime.now().astimezone()`` so the hook
+    never breaks an LLM call.
 """
 
 import os
@@ -15,7 +19,7 @@ from pathlib import Path
 
 
 def _resolve_tz_from_hermes() -> str:
-    """优先委托 hermes_time._resolve_timezone_name()，保持与 Hermes 主程序一致。"""
+    """Delegate to hermes_time._resolve_timezone_name() when available."""
     try:
         import hermes_time  # type: ignore[import-not-found]
         return (hermes_time._resolve_timezone_name() or "").strip()
@@ -24,12 +28,12 @@ def _resolve_tz_from_hermes() -> str:
 
 
 def _resolve_tz_local() -> str:
-    """Hermes 不可用时的本地等价实现：env > ~/.hermes/config.yaml > ''."""
+    """Local fallback: env > ~/.hermes/config.yaml > ''."""
     tz_env = os.environ.get("HERMES_TIMEZONE", "").strip()
     if tz_env:
         return tz_env
     try:
-        import yaml  # PyYAML 是 Hermes 的运行时依赖
+        import yaml  # PyYAML is a Hermes runtime dependency
         cfg_path = Path(
             os.environ.get("HERMES_HOME", Path.home() / ".hermes")
         ) / "config.yaml"
@@ -46,14 +50,16 @@ def _resolve_tz_local() -> str:
 _tz_str = _resolve_tz_from_hermes() or _resolve_tz_local()
 
 
-_WEEKDAYS_ZH = ["星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"]
-
-
 def format_current_time() -> str:
     """
-    返回形如 `[Current time: 2026-05-20 14:30 Asia/Shanghai 星期三]` 的标签字符串。
+    Return a model-facing local-time context tag.
 
-    永不抛异常：任何时区解析失败都回退到本地时区。
+    Example:
+        [Current local time: Wednesday, 2026-07-08 09:34 Asia/Manila]
+
+    The format is optimized for agent situational awareness, not human display:
+    local frame first, English weekday, 24-hour clock, explicit IANA timezone
+    when available, and no UTC conversion burden.
     """
     tz_label = ""
     try:
@@ -66,6 +72,6 @@ def format_current_time() -> str:
     except Exception:
         now = datetime.now().astimezone()
 
-    weekday = _WEEKDAYS_ZH[now.weekday()]
+    weekday = now.strftime("%A")
     tz_label = tz_label or now.strftime("%Z") or now.strftime("%z")
-    return f"[Current time: {now.strftime('%Y-%m-%d %H:%M')} {tz_label} {weekday}]"
+    return f"[Current local time: {weekday}, {now.strftime('%Y-%m-%d %H:%M')} {tz_label}]"
